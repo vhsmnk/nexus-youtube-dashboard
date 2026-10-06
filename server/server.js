@@ -6,16 +6,26 @@ import axios from 'axios'
 dotenv.config()
 
 const app = express()
-const PORT = 3001
+
+const PORT = process.env.PORT || 3001
 
 app.use(cors())
 app.use(express.json())
+
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Nexus API online!',
+  })
+})
 
 app.get('/api/youtube/test', (req, res) => {
   res.json({
     success: true,
     message: 'Backend do Nexus funcionando!',
-    youtubeKeyConfigured: Boolean(process.env.YOUTUBE_API_KEY),
+    youtubeKeyConfigured: Boolean(
+      process.env.YOUTUBE_API_KEY
+    ),
   })
 })
 
@@ -30,7 +40,6 @@ app.get('/api/youtube/channel', async (req, res) => {
       })
     }
 
-    // 1. Encontrar o canal
     const searchResponse = await axios.get(
       'https://www.googleapis.com/youtube/v3/search',
       {
@@ -55,7 +64,6 @@ app.get('/api/youtube/channel', async (req, res) => {
 
     const channelId = channel.id.channelId
 
-    // 2. Buscar informações completas do canal
     const channelResponse = await axios.get(
       'https://www.googleapis.com/youtube/v3/channels',
       {
@@ -76,14 +84,12 @@ app.get('/api/youtube/channel', async (req, res) => {
       })
     }
 
-    // 3. Encontrar a playlist de uploads do canal
     const uploadsPlaylistId =
       channelData.contentDetails?.relatedPlaylists?.uploads
 
     let recentVideos = []
 
     if (uploadsPlaylistId) {
-      // 4. Buscar vídeos recentes
       const playlistResponse = await axios.get(
         'https://www.googleapis.com/youtube/v3/playlistItems',
         {
@@ -100,7 +106,6 @@ app.get('/api/youtube/channel', async (req, res) => {
         ?.map((item) => item.contentDetails?.videoId)
         .filter(Boolean)
 
-      // 5. Buscar estatísticas dos vídeos
       if (videoIds?.length) {
         const videosResponse = await axios.get(
           'https://www.googleapis.com/youtube/v3/videos',
@@ -113,48 +118,40 @@ app.get('/api/youtube/channel', async (req, res) => {
           }
         )
 
-        recentVideos = videosResponse.data.items.map((video) => ({
-          id: video.id,
-
-          title: video.snippet.title,
-
-          description: video.snippet.description,
-
-          publishedAt: video.snippet.publishedAt,
-
-          thumbnail:
-            video.snippet.thumbnails?.high?.url ||
-            video.snippet.thumbnails?.medium?.url ||
-            video.snippet.thumbnails?.default?.url,
-
-          statistics: {
-            viewCount: video.statistics?.viewCount || '0',
-            likeCount: video.statistics?.likeCount || '0',
-            commentCount: video.statistics?.commentCount || '0',
-          },
-        }))
+        recentVideos = videosResponse.data.items.map(
+          (video) => ({
+            id: video.id,
+            title: video.snippet.title,
+            description: video.snippet.description,
+            publishedAt: video.snippet.publishedAt,
+            thumbnail:
+              video.snippet.thumbnails?.high?.url ||
+              video.snippet.thumbnails?.medium?.url ||
+              video.snippet.thumbnails?.default?.url,
+            statistics: {
+              viewCount:
+                video.statistics?.viewCount || '0',
+              likeCount:
+                video.statistics?.likeCount || '0',
+              commentCount:
+                video.statistics?.commentCount || '0',
+            },
+          })
+        )
       }
     }
 
-    // 6. Retornar tudo para o frontend
     res.json({
       success: true,
-
       data: {
         id: channelData.id,
-
         title: channelData.snippet.title,
-
         description: channelData.snippet.description,
-
         publishedAt: channelData.snippet.publishedAt,
-
         thumbnails: channelData.snippet.thumbnails,
-
         statistics: channelData.statistics,
-
-        brandingSettings: channelData.brandingSettings,
-
+        brandingSettings:
+          channelData.brandingSettings,
         recentVideos,
       },
     })
@@ -171,6 +168,8 @@ app.get('/api/youtube/channel', async (req, res) => {
   }
 })
 
-app.listen(PORT, () => {
-  console.log(`Nexus API rodando em http://localhost:${PORT}`)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(
+    `Nexus API rodando na porta ${PORT}`
+  )
 })
