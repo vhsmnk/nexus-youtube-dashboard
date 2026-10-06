@@ -18,21 +18,39 @@ function YoutubeViewsChart({ videos = [] }) {
   }))
 
   return (
-    <div className="rounded-2xl border border-violet-100 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-violet-500/10 bg-zinc-900/80 p-6 shadow-lg shadow-violet-950/10">
 
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-gray-900">
-          Visualizações dos vídeos
-        </h2>
 
-        <p className="mt-1 text-sm text-gray-500">
-          Desempenho dos vídeos mais recentes
-        </p>
+        <div className="flex items-center gap-3">
+
+          <div className="h-8 w-1 rounded-full bg-violet-600" />
+
+          <div>
+
+            <h2 className="text-xl font-bold text-zinc-100">
+              Visualizações dos vídeos
+            </h2>
+
+            <p className="mt-1 text-sm text-zinc-500">
+              Desempenho dos vídeos mais recentes
+            </p>
+
+          </div>
+
+        </div>
+
       </div>
 
       {chartData.length > 0 ? (
+
         <div className="h-80 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+          >
+
             <BarChart
               data={chartData}
               margin={{
@@ -42,10 +60,11 @@ function YoutubeViewsChart({ videos = [] }) {
                 bottom: 60,
               }}
             >
+
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
-                stroke="#ede9fe"
+                stroke="#27272a"
               />
 
               <XAxis
@@ -55,7 +74,7 @@ function YoutubeViewsChart({ videos = [] }) {
                 interval={0}
                 tick={{
                   fontSize: 12,
-                  fill: '#6b7280',
+                  fill: '#71717a',
                 }}
                 axisLine={false}
                 tickLine={false}
@@ -64,7 +83,7 @@ function YoutubeViewsChart({ videos = [] }) {
               <YAxis
                 tick={{
                   fontSize: 12,
-                  fill: '#6b7280',
+                  fill: '#71717a',
                 }}
                 axisLine={false}
                 tickLine={false}
@@ -78,17 +97,20 @@ function YoutubeViewsChart({ videos = [] }) {
 
               <Tooltip
                 cursor={{
-                  fill: '#f5f3ff',
+                  fill: '#7c3aed',
+                  opacity: 0.06,
                 }}
                 formatter={(value) => [
                   new Intl.NumberFormat('pt-BR').format(value),
                   'Visualizações',
                 ]}
                 contentStyle={{
+                  backgroundColor: '#18181b',
                   borderRadius: '12px',
-                  border: '1px solid #ede9fe',
+                  border: '1px solid rgba(139, 92, 246, 0.2)',
+                  color: '#f4f4f5',
                   boxShadow:
-                    '0 10px 30px rgba(76, 29, 149, 0.10)',
+                    '0 15px 40px rgba(0, 0, 0, 0.35)',
                 }}
               />
 
@@ -99,15 +121,23 @@ function YoutubeViewsChart({ videos = [] }) {
                 radius={[8, 8, 0, 0]}
                 maxBarSize={55}
               />
+
             </BarChart>
+
           </ResponsiveContainer>
+
         </div>
+
       ) : (
+
         <div className="flex h-80 items-center justify-center">
-          <p className="text-gray-500">
+
+          <p className="text-zinc-500">
             Nenhum dado disponível para o gráfico.
           </p>
+
         </div>
+
       )}
 
     </div>

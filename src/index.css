@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* ================================
-   RESET / GLOBAL
-================================ */
-
 * {
   box-sizing: border-box;
 }
@@ -27,24 +23,28 @@ body {
     "Segoe UI",
     sans-serif;
 
-  background-color: #f3f4f6;
-  color: #111827;
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(124, 58, 237, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(139, 92, 246, 0.1),
+      transparent 25%
+    ),
+    #09090b;
+
+  color: #f4f4f5;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ================================
-   ROOT
-================================ */
-
 #root {
   min-height: 100vh;
 }
-
-/* ================================
-   ELEMENTOS
-================================ */
 
 button,
 input,
@@ -71,10 +71,6 @@ a {
   text-decoration: none;
 }
 
-/* ================================
-   INPUTS
-================================ */
-
 input,
 textarea,
 select {
@@ -83,12 +79,8 @@ select {
 
 input::placeholder,
 textarea::placeholder {
-  color: #9ca3af;
+  color: #52525b;
 }
-
-/* ================================
-   SCROLLBAR
-================================ */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -96,23 +88,19 @@ textarea::placeholder {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: #09090b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #27272a;
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #7c3aed;
 }
 
-/* ================================
-   SELEÇÃO DE TEXTO
-================================ */
-
 ::selection {
-  background: #111827;
+  background: #7c3aed;
   color: #ffffff;
 }
