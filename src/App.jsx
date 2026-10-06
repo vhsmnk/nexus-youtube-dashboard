@@ -9,6 +9,9 @@ import Growth from './pages/Growth'
 import Channel from './pages/Channel'
 import Settings from './pages/Settings'
 
+const API_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:3001'
+
 function App() {
   const [activePage, setActivePage] = useState('overview')
 
@@ -26,7 +29,7 @@ function App() {
       setYoutubeError(null)
 
       const response = await axios.get(
-        'http://localhost:3001/api/youtube/channel',
+        `${API_URL}/api/youtube/channel`,
         {
           params: {
             query: query.trim(),
@@ -56,7 +59,7 @@ function App() {
         setYoutubeError(null)
 
         const response = await axios.get(
-          'http://localhost:3001/api/youtube/channel',
+          `${API_URL}/api/youtube/channel`,
           {
             params: {
               query: 'MrBeast',
@@ -173,7 +176,9 @@ function App() {
                 {youtubeData.thumbnails?.default?.url && (
                   <div className="rounded-full bg-violet-500/20 p-1">
                     <img
-                      src={youtubeData.thumbnails.default.url}
+                      src={
+                        youtubeData.thumbnails.default.url
+                      }
                       alt={youtubeData.title}
                       className="h-16 w-16 rounded-full object-cover"
                     />
@@ -190,7 +195,9 @@ function App() {
                       Canal do YouTube
                     </p>
 
-                    <span className="text-zinc-700">•</span>
+                    <span className="text-zinc-700">
+                      •
+                    </span>
 
                     <a
                       href={`https://www.youtube.com/channel/${youtubeData.id}`}
